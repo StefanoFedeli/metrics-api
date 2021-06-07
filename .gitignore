@@ -1,0 +1,6 @@
+build
+.gradle
+gradle
+.idea
+*.iml
+producer/data

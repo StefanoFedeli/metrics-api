@@ -1,0 +1,113 @@
+#%RAML 1.0
+title: RedTech Metrics API
+baseUri: http://localhost:7000/api/v1/
+version: 1.0
+
+mediaType: application/json
+types:
+  Views:
+    properties:
+      timestamp:
+        type: timestamp
+      views:
+        type: number
+        minimum: 0
+      show:
+        type: number
+        minimum: 0
+uses:
+  assets: assets.lib.raml
+
+annotationTypes:
+  monitoringInterval:
+    type: integer
+
+/channel/{channel_id}/seconds:
+  displayName: Channel stats per seconds
+  get:
+    is: [ assets.paging ]
+    description: Fetch show's statistics at a second granularity
+    queryParameters:
+      from:
+        displayname: Starting Timestamp
+        type: string
+        description: Timestamp in ISO 8601 format from which data should be collected
+        required: true
+      to:
+        displayname: Ending Timestamp
+        type: string
+        description: Timestamp in ISO 8601 format
+        required: false
+    responses:
+      200:
+        body:
+          type: Views
+          application/json:
+              example:
+                {[
+                  {
+                    "timestamp": '2021-05-13T11:56:01Z',
+                    "views": 245,
+                    "show": 3001
+                  },
+                  {
+                    "timestamp": '2021-05-13T11:56:02Z',
+                    "views": 256,
+                    "show": 3001
+                  }
+                ]}
+      400:
+        body:
+          application/json:
+              example:
+                {
+                    "title": " Query parameter 'from' it is not ISO81 ",
+                    "status": 400,
+                    "type": "https://javalin.io/documentation#badrequestresponse",
+                    "details": []
+                }
+/channel/{channel_id}/minutes:
+  displayName: Channel stats per minute
+  get:
+    is: [ assets.paging ]
+    description: Fetch show's statistics at a minute granularity
+    queryParameters:
+      from:
+        displayname: Starting Timestamp
+        type: string
+        description: Timestamp in ISO 8601 format from which data should be collected
+        required: true
+      to:
+        displayname: Ending Timestamp
+        type: string
+        description: Timestamp in ISO 8601 format
+        required: false
+    responses:
+      200:
+        body:
+          type: Views
+          application/json:
+              example:
+                example:
+                {[
+                  {
+                    "timestamp": '2021-05-13T11:56:00Z',
+                    "views": 245,
+                    "show": 3002
+                  },
+                  {
+                    "timestamp": '2021-05-13T11:57:00Z',
+                    "views": 256,
+                    "show": 3002
+                  }
+                ]}
+      400:
+        body:
+          application/json:
+              example:
+                {
+                    "title": " Query parameter 'from' it is not ISO81 ",
+                    "status": 400,
+                    "type": "https://javalin.io/documentation#badrequestresponse",
+                    "details": []
+                }

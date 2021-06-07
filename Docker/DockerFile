@@ -1,0 +1,4 @@
+FROM gradle:6.9.0-jdk8 AS build
+WORKDIR /home/gradle/src
+VOLUME /home/gradle/src
+CMD chown -R gradle:gradle /home/gradle/src/ && gradle build --no-daemon --info
